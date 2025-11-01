@@ -9,6 +9,8 @@ const viewport = {
 		image: 0,
 		box: 1,
 		arrow: 2,
+		move_start: 3,
+		move_end: 4
 	},
 
 	/**
@@ -27,7 +29,7 @@ const viewport = {
 		viewport.imgElem = elem
 		
 		// trash all the previous painting shapes too!
-		viewport.objects = [ viewport.newObject( elem, 'Pasted image' ) ]
+		viewport.objects = [ viewport.newObject( viewport.types.image ) ]
 		viewport.updateObjectList()
 
 		// Setup the canvas.
@@ -40,7 +42,6 @@ const viewport = {
 	newObject: ( type ) => {
 		obj = {}
 		obj.type = type
-		obj.name = '' + type
 		obj.id = crypto.randomUUID()
 		return obj
 	},
@@ -49,16 +50,42 @@ const viewport = {
 	 * A mouse press happened on the glass, usually the prelude to a drag/drop operation. 
 	 */
 	mousePressed: ( event ) => {
-		if ( viewport.mightDraw ) {
-			// Create a new object for the data model.
-			let obj = viewport.newObject( viewport.mightDraw )
-			viewport.objects.push( obj )
-			viewport.drawingObj = obj
+		if ( viewport.nextDrawFunc ) {
+			viewport.drawFunc = viewport.nextDrawFunc
 			
 			// Mark the position of the mouse relative to the x,y of the image.
 			let bound = viewport.imgElem.getBoundingClientRect()
-			obj.x = event.clientX - bound.x
-			obj.y = event.clientY - 44 - bound.y
+
+			switch ( viewport.drawFunc ) {
+				// New objects result in a new entry in the datamodel
+				case viewport.types.arrow:
+				case viewport.types.box:
+					viewport.drawingObj = viewport.newObject( viewport.drawFunc )
+					viewport.objects.push( viewport.drawingObj )
+					viewport.selection = viewport.drawingObj
+
+					// set the bounds of the shape to the current mouse position
+					viewport.drawingObj.x = event.clientX - bound.x
+					viewport.drawingObj.y = event.clientY - 44 - bound.y
+					viewport.drawingObj.x2 = event.clientX - bound.x
+					viewport.drawingObj.y2 = event.clientY - 44 - bound.y
+					viewport.drawingObj.offsetx = 0
+					viewport.drawingObj.offsety = 0
+					break
+				
+				// If we're moving something just get the current selection.
+				case viewport.types.move_start:
+					viewport.drawingObj = viewport.selection
+					viewport.drawingObj.offsetx = event.clientX - viewport.drawingObj.x - bound.x
+					viewport.drawingObj.offsety = event.clientY - viewport.drawingObj.y - bound.y
+					break
+
+				case viewport.types.move_end:
+					viewport.drawingObj = viewport.selection
+					viewport.drawingObj.offsetx = event.clientX - viewport.drawingObj.x2 - bound.x
+					viewport.drawingObj.offsety = event.clientY - viewport.drawingObj.y2 - bound.y
+					break
+			}
 		}
 	},
 
@@ -66,6 +93,7 @@ const viewport = {
 	 * Commits whatever drag we were doing.
 	 */
 	mouseReleased: ( event ) => {
+		viewport.drawFunc = null
 		viewport.drawingObj = null
 		viewport.updateObjectList()
 	},
@@ -74,11 +102,27 @@ const viewport = {
 	 * If we're mid-drag then update the appropriate models and ask for a repaint ...
 	 */
 	mouseMoved: ( event ) => {
-		if ( viewport.drawingObj ) {
+		if ( viewport.drawFunc ) {
 			// Mark the position of the mouse relative to the x,y of the image.
 			let bound = viewport.imgElem.getBoundingClientRect()
-			obj.x2 = event.clientX - bound.x
-			obj.y2 = event.clientY - 44 - bound.y
+
+			// Drawing function dictates which co-ords get changed
+			if ( viewport.drawFunc === viewport.types.move_start ) {
+				let oldx = viewport.drawingObj.x
+				let oldy = viewport.drawingObj.y
+				viewport.drawingObj.x = event.clientX - bound.x - viewport.drawingObj.offsetx
+				viewport.drawingObj.y = event.clientY - bound.y - viewport.drawingObj.offsety
+				oldx = viewport.drawingObj.x - oldx
+				oldy = viewport.drawingObj.y - oldy
+				viewport.drawingObj.x2 += oldx
+				viewport.drawingObj.y2 += oldy
+			} else if ( viewport.drawFunc === viewport.types.move_end ) {
+				viewport.drawingObj.x2 = event.clientX - bound.x - viewport.drawingObj.offsetx
+				viewport.drawingObj.y2 = event.clientY - bound.y - viewport.drawingObj.offsety
+			} else {
+				viewport.drawingObj.x2 = event.clientX - bound.x
+				viewport.drawingObj.y2 = event.clientY - 44 - bound.y
+			}
 			viewport.paint()
 		}
 	},
@@ -89,12 +133,22 @@ const viewport = {
 	keyDown: ( event ) => {
 		// 65 is 'A' for arrow.
 		if ( event.keyCode === 65 ) {
-			viewport.mightDraw = viewport.types.arrow
+			viewport.nextDrawFunc = viewport.types.arrow
 		}
 
 		// 66 is 'B' for box.
 		else if ( event.keyCode === 66 ) {
-			viewport.mightDraw = viewport.types.box
+			viewport.nextDrawFunc = viewport.types.box
+		}
+
+		// 16 is SHIFT for moving
+		else if ( event.keyCode === 16 ) {
+			viewport.nextDrawFunc = viewport.types.move_start
+		}
+
+		// 18 is ALT for moving the end
+		else if ( event.keyCode === 18 ) {
+			viewport.nextDrawFunc = viewport.types.move_end
 		}
 	},
 
@@ -102,7 +156,19 @@ const viewport = {
 	 * Resets the drawing mode.
 	 */
 	keyUp: ( event ) => {
-		viewport.mightDraw = null
+		viewport.nextDrawFunc = null
+	},
+
+	/**
+	 * Called from the UI. Selects the shape with the matching ID.
+	 */
+	select: ( id ) => {
+		for ( let obj of viewport.objects ) {
+			if ( obj.id === id ) {
+				viewport.selection = obj
+				break
+			}
+		}
 	},
 
 	/**
@@ -114,7 +180,20 @@ const viewport = {
 
 		for ( let obj of viewport.objects ) {
 			let elem = document.createElement( 'a' )
-			elem.innerHTML = obj.name
+
+			switch( obj.type ) {
+				case viewport.types.image:
+	 		 		elem.innerHTML = 'Pasted image'
+					break
+				case viewport.types.box:
+	 		 		elem.innerHTML = 'Box'
+					break
+				case viewport.types.arrow:
+	 		 		elem.innerHTML = 'Arrow'
+					break
+			}
+			elem.setAttribute( 'href', 'javascript:void' )
+			elem.setAttribute( 'onclick', `viewport.select('${obj.id}')` )
 			div.appendChild( elem )
 		}
 	},
@@ -132,25 +211,32 @@ const viewport = {
 	 * Paints the objects onto the canvas.
 	 */
 	paint: () => {
+		// Obtain the context for drawing on.
 		let cc = viewport.canvas.getContext("2d");
 		cc.clearRect( 0,0, viewport.canvas.width, viewport.canvas.height )
 		cc.lineWidth = 2
 
+		// Drawing is relative to the x,y of the image. We can simplify this by
+		// translating the canvas.
 		let bound = viewport.imgElem.getBoundingClientRect()
 		cc.translate(bound.x, bound.y )
-
 		for ( let obj of viewport.objects ) {
 			viewport.paintObj( cc, obj )
 		}
+
+		// Put the translation back.
 		cc.translate( -bound.x, -bound.y )
 	},
 
+	/**
+	 * Paints a single canvas object.
+	 */
 	paintObj: ( cc, obj ) => {
 		if ( obj ) {
 			switch ( obj.type ) {
 				case viewport.types.box:
 					cc.beginPath()
-					cc.rect( obj.x, obj.y, obj.x2-obj.x, obj.y2-obj.y)
+					cc.rect( obj.x, obj.y, obj.x2-obj.x, obj.y2-obj.y )
 					cc.stroke()
 					break
 

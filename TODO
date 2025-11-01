@@ -8,22 +8,21 @@ VERSIONING
 **** BUGS *********************************************************
 
 **** FEATURES *************************
-- draw rectangles
-  - make sure they track window resizing
-  - textured might be nice
-- draw arrows (SVG element)
-- write text
+- delete a shape
+- select shapes in list to ghost/x-ray them
+- move with arrow keys
+- draw arrow heads
 - foreground colour
   - snappy limited choice (black, white, red, orange, green, blue, grey)
   - remember selection
+- draw rectangles ... textured might be nice
 - stroke width
-- edit shapes
+- write text
 - undo 
-- move with arrow keys
-- objects listed on left/right where you can select/delete/edit
 - sort out CSS vars and redo dark mode
 - fancy CTA
-- domain
 - freehand drawing tool
 - quickly change background colour from colours in the image
 - fix the UI for small windows
+- get the tray working again
+- pasting retina images makes them big
