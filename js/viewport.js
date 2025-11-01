@@ -50,12 +50,15 @@ const viewport = {
 	 */
 	mousePressed: ( event ) => {
 		if ( viewport.mightDraw ) {
+			// Create a new object for the data model.
 			let obj = viewport.newObject( viewport.mightDraw )
 			viewport.objects.push( obj )
 			viewport.drawingObj = obj
 			
-			obj.x = event.clientX
-			obj.y = event.clientY - 44
+			// Mark the position of the mouse relative to the x,y of the image.
+			let bound = viewport.imgElem.getBoundingClientRect()
+			obj.x = event.clientX - bound.x
+			obj.y = event.clientY - 44 - bound.y
 		}
 	},
 
@@ -72,8 +75,10 @@ const viewport = {
 	 */
 	mouseMoved: ( event ) => {
 		if ( viewport.drawingObj ) {
-			obj.x2 = event.clientX
-			obj.y2 = event.clientY - 44
+			// Mark the position of the mouse relative to the x,y of the image.
+			let bound = viewport.imgElem.getBoundingClientRect()
+			obj.x2 = event.clientX - bound.x
+			obj.y2 = event.clientY - 44 - bound.y
 			viewport.paint()
 		}
 	},
@@ -129,10 +134,15 @@ const viewport = {
 	paint: () => {
 		let cc = viewport.canvas.getContext("2d");
 		cc.clearRect( 0,0, viewport.canvas.width, viewport.canvas.height )
+		cc.lineWidth = 2
+
+		let bound = viewport.imgElem.getBoundingClientRect()
+		cc.translate(bound.x, bound.y )
 
 		for ( let obj of viewport.objects ) {
 			viewport.paintObj( cc, obj )
 		}
+		cc.translate( -bound.x, -bound.y )
 	},
 
 	paintObj: ( cc, obj ) => {
