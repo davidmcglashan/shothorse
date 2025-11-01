@@ -1,0 +1,54 @@
+/* Keyframes which manage the tray sliding in and out by setting its left position. */
+@keyframes slideIn {
+  0% { left: 100% }
+  100% { left: 40% }
+}
+@keyframes slideOut {
+  0% { left: 40% }
+  100% { left: 100% }
+}
+
+/* Styling and layout for the slide-in tray itself. */
+section#tray {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 100%;
+	width: 60%;
+	height: 100%;
+	background-color: var(--pane-bg);
+	border-left: var(--pane-border) 1px solid;
+	z-index: 2;
+
+	display: flex;	/* Use flebox here. Tabs at the top, tab content filling the remaining container (with scrollbars) ... */
+  min-height: 100%;
+  flex-direction: column;
+	overflow-x: hidden;
+	overflow-y: hidden;
+}
+	/* These two classes are applied to the tray to trigger its animations in and out. */
+	section#tray.open {
+		animation: slideIn 0.5s forwards;
+	}
+	section#tray.closed {
+		animation: slideOut 0.5s forwards;
+	}
+
+	/* Tray content invokes flex and re-instates the Y scrollbar which was suppressed on the tray itself. */
+	section#tray #_tray {
+		overflow-y: auto;
+		display: flex;
+	}
+
+	div#_tray-about {
+	padding: 1em;
+	line-height: 1.4em;
+}
+	div#_tray-about h1 {
+		margin: 0;
+	}
+
+	/* Stop that image getting too wide. */
+	div#_tray-about img {
+		width: 10em;
+	}
