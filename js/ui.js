@@ -1,5 +1,5 @@
 const ui = {
-	version: '0.0.1',
+	version: '0.0.2',
 
 	/**
 	 * Toggles dark mode

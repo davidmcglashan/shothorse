@@ -10,15 +10,15 @@
 	--button-hover-fg: #fff;
 	--button-hover-bg: #236;
 	--lightbox: rgba(0, 55, 0, 0.5);
-	--pane-border: #ddd;
-	--pane-bg: #fff;
+	--pane-border: #777;
+	--pane-bg: #888;
 	--text-fg: #121;
 	--selected-tab: #444;
 	--tab-hover-bg: #eee;
 	--tab-hover-fg: #25a;
 	--example-bg: #f0f0f0;
 	--example-border: #e0e0e0;
-	--log-fg: #f00;
+	--pane-cta: #444;
 	color-scheme: light;
 }
 
@@ -41,7 +41,7 @@
 	--tab-hover-fg: #ff0;
 	--example-bg: #000;
 	--example-border: #111;
-	--log-fg: #f00;
+	--pane-cta: #aaa;
 	color-scheme: dark;
 }
 
@@ -155,7 +155,7 @@ a {
 	}
 		/* Inverted buttons are white with a grey border. Some of them toggle into the blue buttons. */
 		a.button.invert {
-			background-color: var(--pane-bg);
+			background-color: var(--ui-background);
 			border: 1px solid var(--pane-border);
 			color: var(--button-alt-fg);
 		}

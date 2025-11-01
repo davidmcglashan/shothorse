@@ -1,0 +1,13 @@
+section#canvas > div {
+	background-color: var(--pane-bg);
+	position: absolute;
+	inset: 44px 0 28px 0;
+	border-top: 1px solid var(--pane-border);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+	section#canvas > div div.cta {
+		color: var(--pane-cta);
+		font-size: clamp( 1rem, 10cqh, 4rem);
+	}
