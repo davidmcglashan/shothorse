@@ -10,8 +10,24 @@ VERSIONING
 **** FEATURES *************************
 - draw rectangles
   - make sure they track window resizing
-- draw lines
+  - bordered <div> 
+  - drags on glass
+  - textured might be nice
+- draw arrows (SVG element)
 - write text
+- foreground colour
+  - snappy limited choice (black, white, red, orange, green, blue, grey)
+  - remember selection
+- stroke width
+- edit shapes (might need a data model)
+- undo (again with the data model ...)
+- objects listed on left/right where you can select/delete/edit
+- sort out CSS vars and redo dark mode
+- fancy CTA
+- domain
 
 **** IDEAS *************************
-- freehand
+- freehand drawing tool
+- get rid of the footer
+- quickly change background colour from colours in the image
+- give image a drop shadow (silly?)

@@ -14,55 +14,46 @@
 		<link href="https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
 		<link href="https://fonts.googleapis.com/css2?family=Sono:wght@200..800&display=swap" rel="stylesheet">
 		<link rel="stylesheet" href="css/ui.css">
-		<link rel="stylesheet" href="css/canvas.css">
+		<link rel="stylesheet" href="css/viewport.css">
 		<link rel="stylesheet" href="css/tray.css">
 		<meta charset="utf-8">
 	</head>
 	<body>
-		<header>
+		<div class="header">
 			<img src="horse.png" alt="shothorse logo">
 			<h1>shothorse</h1>
 			<div class="toolbar">
-				<a title="Toggle dark mode" class="button invert" href="#" onclick="ui.dark()"><span class="dark">Dark</span><span class="light">Light</span> Mode</a>
 				<a title="Open the about page" href="#" onclick="ui.about()" class="button">About</a>
 			</div>
-		</header>
-		<main>
-			<section id="canvas">
-				<div>
-					<div id="cta">Paste an image</div>
-				</div>
-			</section>
-			<section id="lightbox" onclick="ui.about()">
-			</section>
-			<section id="tray">
-				<div id="_tray-about">
-					<img src="horse.png" alt="shothorse logo">
-					<h1>shothorse</h1>
-					<span class="version"></span><br>
-					<p>
-						<strong>Shothorse</strong> is a simple app for manipulating screenshots.
-					</p>							
-					<hr>
-					<p>
-						Officially on the web at <a title="shothorse web site" href="https://shothorse.mcglashan.net/">shothorse.mcglashan.net</a>
-					</p>
-					<p>
-						All the source code on github at 
-						<a title="Source code on github.com" href="https://github.com/davidmcglashan/shothorse">github.com/davidmcglashan/shothorse</a> (<a title="Creative Commons license details" href="https://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0 Universal</a>)
-					</p>
-					<p>
-						<a href="https://www.flaticon.com/free-icons/horse" title="horse icons">Horse icons created by Freepik - Flaticon</a>
-					</p>
-				</div>
-			</section>
-		</main>
-		<footer>
-			<strong class="version"></strong> | &copy; <span class="year"></span> <a href="https://david.mcglashan.net/">David McGlashan</a>
-		</footer>
+		</div>
+		<div id="viewport">
+			<div id="list">Objects</div>
+			<div id="cta">Paste an image</div>
+		</div>
+		<div id="lightbox" onclick="ui.about()" class="hidden"></div>
+		<div id="tray" class="hidden">
+			<img src="horse.png" alt="shothorse logo">
+			<h1>shothorse</h1>
+			<span class="version"></span><br>
+			<p>
+				<strong>Shothorse</strong> is a simple app for manipulating screenshots.
+			</p>							
+			<hr>
+			<p>
+				Officially on the web at <a title="shothorse web site" href="https://shothorse.mcglashan.net/">shothorse.mcglashan.net</a>
+			</p>
+			<p>
+				All the source code on github at 
+				<a title="Source code on github.com" href="https://github.com/davidmcglashan/shothorse">github.com/davidmcglashan/shothorse</a> (<a title="Creative Commons license details" href="https://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0 Universal</a>)
+			</p>
+			<p>
+				<a href="https://www.flaticon.com/free-icons/horse" title="horse icons">Horse icons created by Freepik - Flaticon</a>
+			</p>
+		</div>
 	</body>
+
 	<script type="text/javascript" src="js/ui.js"></script>
-	<script type="text/javascript" src="js/canvas.js"></script>
+	<script type="text/javascript" src="js/viewport.js"></script>
 	<script type="text/javascript">
 		ui.init()
 	</script>

@@ -1,19 +1,6 @@
 const ui = {
 	version: '0.0.3',
 
-	/**
-	 * Toggles dark mode
-	 */
-	dark: () => {
-		let html = document.getElementById('html')
-		html.classList.toggle('dark')
-
-		if ( html.classList.contains('dark') ) {
-			localStorage['shothorse.dark'] = true
-		} else {
-			localStorage.removeItem( 'shothorse.dark' )
-		}
-	},
 
 	/**
 	 * Initialise the UI. To be called once at point of page load.
@@ -38,12 +25,6 @@ const ui = {
 	 * Restores the UI to its previous state invoking localstorage. Called once on page load.
 	 */
 	restoreState: () => {
-		// Are we doing dark mode?
-		if ( localStorage[ 'shothorse.dark' ] ) {
-			let html = document.getElementById('html')
-			html.classList.add('dark')
-		}
-
 		// Add an escape listener for the slide-in tray.
 		document.addEventListener( 'keydown', (event) => {
 			if ( tray.classList.contains( 'closed' ) ) {
@@ -60,7 +41,7 @@ const ui = {
 			for ( const file of ev.clipboardData.files ) {
 				const img = document.createElement( 'img' );
 				img.src = URL.createObjectURL( file );
-				canvas.init( img );
+				viewport.init( img );
 			}
 		} );
 	},
