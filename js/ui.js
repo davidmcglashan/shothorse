@@ -1,5 +1,5 @@
 const ui = {
-	version: '0.0.2',
+	version: '0.0.3',
 
 	/**
 	 * Toggles dark mode
@@ -52,7 +52,17 @@ const ui = {
 			if ( event.key === 'Escape' ) {
 				ui.help()
 			}
-		})
+		} )
+
+		// This is the paste event listener. We do the IO here and initialise the canvas JS object
+		// with any images we find in the clipboard.
+		document.addEventListener( 'paste', async (ev) => {
+			for ( const file of ev.clipboardData.files ) {
+				const img = document.createElement( 'img' );
+				img.src = URL.createObjectURL( file );
+				canvas.init( img );
+			}
+		} );
 	},
 
 	/**

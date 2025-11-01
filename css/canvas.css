@@ -7,7 +7,7 @@ section#canvas > div {
 	justify-content: center;
 	align-items: center;
 }
-	section#canvas > div div.cta {
+	div#cta {
 		color: var(--pane-cta);
 		font-size: clamp( 1rem, 10cqh, 4rem);
 	}
