@@ -5,8 +5,7 @@
 	border-top: 1px solid #777;
 	display: flex;
 	justify-content: center;
-	align-items: center;
-}
+	align-items: center;}
 
 #viewport img {
 	box-shadow: 0px 0px 8px rgba(0,0,0,0.3);
@@ -18,13 +17,25 @@
 	font-size: clamp( 1rem, 10cqh, 4rem);
 }
 
+/* Glass sits on top of the UI and listens for mouse events. */
+#glass {
+	position: absolute;
+	inset: 44px 0 0 0;
+}
+
+#canvas {
+	position: absolute;
+	inset: 44px 0 0 0;
+	border: red 1px solid;
+}
+
 /* The list shows all the objects in the viewport down the side of the UI */
 #list {
 	border: 1px solid #777;
 	border-radius: 0.5rem;
 	padding: 0.5rem;
 	position: absolute;
-	inset: 0.5rem auto 0.5rem 0.5rem;
+	inset: calc(44px + 0.5rem) auto 0.5rem 0.5rem;
 	background-color: rgba(0,0,0,0.1);
 	color: #fff;
 }

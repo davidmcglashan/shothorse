@@ -6,9 +6,15 @@ body {
 	font-style: normal;
 	margin: 0;
 	background-color: #fafafa;
-	overflow-x: hidden;
+	overflow: hidden;
 	color: #121;
 	font-size: 10pt;
+}
+
+/* Disable text selection on everything since we'll be doing lots of dragging and dropping. */
+* {
+	-webkit-user-select: none;
+	user-select: none;
 }
 
 /* The header and its elements are stickily positioned and have simple presentation. */
@@ -88,8 +94,8 @@ a {
 	}
 		/* Affordance effects for buttons: dark background, white foreground. */
 		a.button:hover {
-			border: 1px solid #236; !important;
-			background-color: #236; !important;
+			border: 1px solid #236 !important;
+			background-color: #236 !important;
 			color: #fff !important;
 		}
 

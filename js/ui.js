@@ -1,6 +1,5 @@
 const ui = {
-	version: '0.0.3',
-
+	version: '0.0.5',
 
 	/**
 	 * Initialise the UI. To be called once at point of page load.
@@ -41,9 +40,23 @@ const ui = {
 			for ( const file of ev.clipboardData.files ) {
 				const img = document.createElement( 'img' );
 				img.src = URL.createObjectURL( file );
-				viewport.init( img );
+				img.decode().then(() => {
+					viewport.init( img );
+				})
 			}
 		} );
+
+		// Have the viewport listen to mouse events occurring on the glass pane.
+		let glass = document.getElementById( 'glass' )
+		glass.addEventListener( 'mouseup', viewport.mouseReleased )
+		glass.addEventListener( 'mousemove', viewport.mouseMoved )
+		glass.addEventListener( 'mousedown', viewport.mousePressed )
+
+		// Have the viewport listen to keypresses too ...
+		document.addEventListener( 'keydown', viewport.keyDown )
+		document.addEventListener( 'keyup', viewport.keyUp )
+		addEventListener( 'resize', (event) => { viewport.snap() } )
+
 	},
 
 	/**
