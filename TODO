@@ -12,9 +12,6 @@ VERSIONING
 - select shapes in list to ghost/x-ray them
 - move with arrow keys
 - draw arrow heads
-- foreground colour
-  - snappy limited choice (black, white, red, orange, green, blue, grey)
-  - remember selection
 - draw rectangles ... textured might be nice
 - stroke width
 - write text

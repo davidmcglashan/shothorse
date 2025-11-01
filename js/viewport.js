@@ -13,6 +13,15 @@ const viewport = {
 		move_end: 4
 	},
 
+	colours: [
+		{ name: 'Red', rgb: '#000000' },
+		{ name: 'Orange', rgb: '#aa8800' },
+		{ name: 'Green', rgb: '#008800' },
+		{ name: 'Blue', rgb: '#0000aa' },
+		{ name: 'Black', rgb: '#000000' },
+		{ name: 'White', rgb: '#ffffff' },
+	],
+	
 	/**
 	 * Initialise the canvas with the new <img> element being passed in.
 	 */
@@ -43,6 +52,16 @@ const viewport = {
 		obj = {}
 		obj.type = type
 		obj.id = crypto.randomUUID()
+		
+		// Work out what colour the shape should be.
+		let uicol = document.getElementById( 'colour' ).value
+		for ( let colour of viewport.colours ) {
+			if ( colour.name === uicol ) {
+				obj.rgb = colour.rgb
+				break
+			}
+		}
+
 		return obj
 	},
 
@@ -236,12 +255,14 @@ const viewport = {
 			switch ( obj.type ) {
 				case viewport.types.box:
 					cc.beginPath()
+					cc.strokeStyle = obj.rgb
 					cc.rect( obj.x, obj.y, obj.x2-obj.x, obj.y2-obj.y )
 					cc.stroke()
 					break
 
 				case viewport.types.arrow:
 					cc.beginPath()
+					cc.strokeStyle = obj.rgb
 					cc.moveTo( obj.x, obj.y )
 					cc.lineTo( obj.x2, obj.y2 )
 					cc.stroke()

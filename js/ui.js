@@ -5,8 +5,6 @@ const ui = {
 	 * Initialise the UI. To be called once at point of page load.
 	 */
 	init: () => {
-		ui.restoreState()
-
 		// Put the version string into any elements with a version class.
 		let versions = document.getElementsByClassName( 'version' )
 		for ( let version of versions ) {
@@ -18,12 +16,28 @@ const ui = {
 		for ( let year of years ) {
 			year.innerHTML = new Date().getFullYear()
 		}
+
+		// Populate the colours dropdown
+		let select = document.getElementById( 'colour' )
+		for ( let colour of viewport.colours ) {
+			let option = document.createElement( 'option')
+			select.appendChild( option )
+
+			option.setAttribute( 'value', colour.name )
+			option.innerHTML = colour.name
+		}
+
+		ui.restoreState()
 	},
 
 	/**
 	 * Restores the UI to its previous state invoking localstorage. Called once on page load.
 	 */
 	restoreState: () => {
+		if ( localStorage[ 'shothorse.colour' ] ) {
+			document.getElementById( 'colour' ).value = localStorage[ 'shothorse.colour' ]
+		}
+
 		// Add an escape listener for the slide-in tray.
 		document.addEventListener( 'keydown', (event) => {
 			if ( tray.classList.contains( 'closed' ) ) {
@@ -57,6 +71,10 @@ const ui = {
 		document.addEventListener( 'keyup', viewport.keyUp )
 		addEventListener( 'resize', (event) => { viewport.snap() } )
 
+	},
+
+	setColour: () => {
+		localStorage[ 'shothorse.colour' ] = document.getElementById( 'colour' ).value
 	},
 
 	/**
