@@ -56,6 +56,7 @@ body {
 	visibility: hidden;
 	opacity: 0;
 	transition: opacity 250ms ease-in, visibility 0ms ease-in 250ms;
+	backdrop-filter: blur(8px);
 }
 
 /* The show class is applied to the lightbox when it is needed which triggers its transition. */
@@ -119,3 +120,49 @@ div.toolbar {
 	top: 1em;	
 	color: #595959;
 }
+
+/* Keyframes which manage the tray sliding in and out by setting its left position. */
+@keyframes slideIn {
+  0% { left: 100% }
+  100% { left: 60% }
+}
+@keyframes slideOut {
+  0% { left: 60% }
+  100% { left: 100% }
+}
+
+/* Styling and layout for the slide-in tray itself. */
+div#tray {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 100%;
+	width: 40%;
+	height: 100%;
+	background-color: #fff;
+	border-left: #777 1px solid;
+	z-index: 2;
+	padding: 1rem;
+	box-shadow: 0px 0px 16px rgba(0,0,0,0.5);
+	min-height: 100%;
+}
+	/* These two classes are applied to the tray to trigger its animations in and out. */
+	div#tray.open {
+		animation: slideIn 0.5s forwards;
+	}
+	div#tray.closed {
+		animation: slideOut 0.5s forwards;
+	}
+	div#tray img {
+		width: 8rem;
+		height: 8rem;
+	}
+	div#tray hr {
+		margin: 1rem 0;
+		border-color: #ddd;
+	}
+
+	div#tray * {
+		line-height: 1.4em;
+		margin: 0 0 0.1rem 0;
+	}
