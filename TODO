@@ -9,7 +9,7 @@ VERSIONING
 
 **** FEATURES *************************
 - select shapes in list to ghost/x-ray them
-  - delete a shape
+  - selection UI
   - change colour
   - change stroke width
 - regular ol' lines

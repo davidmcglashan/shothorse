@@ -46,6 +46,25 @@ const viewport = {
 	},
 
 	/**
+	 * The image has been deleted so stop everything!
+	 */
+	stop: () => {
+		// Firstly tide up the models ...
+		viewport.objects = []
+
+		// Now the UI.
+		let cta = document.getElementById( 'cta' )
+		cta.classList.remove( 'hidden' )
+		viewport.imgElem.remove()
+		viewport.imgElem = null
+		viewport.updateObjectList()
+
+		// Can't call paint, but we can wipe the canvas.
+		let cc = viewport.canvas.getContext("2d");
+		cc.clearRect( 0,0, viewport.canvas.width, viewport.canvas.height )
+	},
+
+	/**
 	 * Creates a new object for adding to the viewport's data model.
 	 */
 	newObject: ( type ) => {
@@ -181,6 +200,25 @@ const viewport = {
 			viewport.nextDrawFunc = viewport.types.move_end
 			viewport.glass.setAttribute( 'class', 'edit' )
 			viewport.paint()
+		}
+
+		// Backspace to delete the selected object.
+		else if ( viewport.selection && event.keyCode === 8 ) {
+			let index = 0
+			for ( let obj of viewport.objects ) {
+				if ( obj.id === viewport.selection.id ) {
+					if ( index === 0 ) {
+						viewport.stop()
+					} else {
+						viewport.objects.splice( index, 1 )
+						break
+					}
+				} else {
+					index += 1
+				}
+			}
+			viewport.paint()
+			viewport.updateObjectList()
 		}
 
 		// Do some arrow key magic ...
