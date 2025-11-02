@@ -11,14 +11,14 @@ VERSIONING
 - delete a shape
 - select shapes in list to ghost/x-ray them
 - move with arrow keys
-- draw arrow heads
-- draw rectangles ... textured might be nice
-- stroke width
+- regular ol' lines
+- stroke width picker
+- textured pen strokes might be nice
 - write text
 - undo 
 - sort out CSS vars and redo dark mode
 - fancy CTA
+- detect if a 'too large' image is being pasted in and apply scale right away
 - freehand drawing tool
 - quickly change background colour from colours in the image
-- handle empty states
 - icons and web manifest

@@ -28,7 +28,15 @@
 	position: absolute;
 	inset: 0;
 }
-
+	#glass.draw {
+		cursor: crosshair;
+	}
+	#glass.move {
+		cursor: all-scroll;
+	}
+	#glass.edit {
+		cursor: cell;
+	}
 #canvas {
 	position: absolute;
 	inset: 0;

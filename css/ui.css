@@ -143,16 +143,18 @@ div#tray {
 	border-left: #777 1px solid;
 	z-index: 2;
 	padding: 1rem;
-	box-shadow: 0px 0px 16px rgba(0,0,0,0.5);
 	min-height: 100%;
 }
 	/* These two classes are applied to the tray to trigger its animations in and out. */
 	div#tray.open {
+		box-shadow: 0px 0px 16px rgba(0,0,0,0.5);
 		animation: slideIn 0.5s forwards;
 	}
 	div#tray.closed {
 		animation: slideOut 0.5s forwards;
 	}
+
+	/* Other tray styles ... */
 	div#tray img {
 		width: 8rem;
 		height: 8rem;
@@ -161,7 +163,6 @@ div#tray {
 		margin: 1rem 0;
 		border-color: #ddd;
 	}
-
 	div#tray * {
 		line-height: 1.4em;
 		margin: 0 0 0.1rem 0;
