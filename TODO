@@ -20,6 +20,5 @@ VERSIONING
 - fancy CTA
 - freehand drawing tool
 - quickly change background colour from colours in the image
-- fix the UI for small windows
 - get the tray working again
-- pasting retina images makes them big
+- handle empty states

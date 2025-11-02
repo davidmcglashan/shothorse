@@ -19,19 +19,19 @@
 		<meta charset="utf-8">
 	</head>
 	<body>
-		<div class="header">
-			<img src="horse.png" alt="shothorse logo">
-			<h1>shothorse</h1>
-			<div class="toolbar">
-				<select name="colour" id="colour" onchange="ui.setColour()"></select>
-				<a title="Open the about page" href="#" onclick="ui.about()" class="button">About</a>
-			</div>
-		</div>
 		<div id="viewport">
 			<div id="cta">Paste an image</div>
 		</div>
 		<canvas id="canvas"></canvas>
 		<div id="glass"></div>
+		<div class="header">
+			<img src="horse.png" alt="shothorse logo">
+			<h1>shothorse</h1>
+			<div class="toolbar">
+				<select name="colour" id="colour" onchange="ui.setColour()"></select>
+				<a title="Open the about page" href="javascript:void(0);" onclick="ui.about()" class="button">About</a>
+			</div>
+		</div>
 		<div id="list">Objects</div>
 		<div id="lightbox" onclick="ui.about()" class="hidden"></div>
 		<div id="tray" class="hidden">

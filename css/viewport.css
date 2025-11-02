@@ -1,14 +1,20 @@
 #viewport {
 	background-color: #888;
 	position: absolute;
-	inset: 44px 0 0 0;
+	inset: 0;
 	border-top: 1px solid #777;
 	display: flex;
 	justify-content: center;
 	align-items: center;}
 
+/* Cutesy shadows for the pasted images. */
 #viewport img {
 	box-shadow: 0px 0px 8px rgba(0,0,0,0.3);
+}
+
+/* Applying the scaled class to the viewport halves the size of all the images. */
+#viewport.scaled img {
+	scale: 50%;
 }
 
 /* The call to action which is visible when there is no image. */
@@ -20,13 +26,12 @@
 /* Glass sits on top of the UI and listens for mouse events. */
 #glass {
 	position: absolute;
-	inset: 44px 0 0 0;
+	inset: 0;
 }
 
 #canvas {
 	position: absolute;
-	inset: 44px 0 0 0;
-	border: red 1px solid;
+	inset: 0;
 }
 
 /* The list shows all the objects in the viewport down the side of the UI */

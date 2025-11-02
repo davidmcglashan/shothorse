@@ -25,14 +25,12 @@ body {
 	right: 0;
 	padding: 1em;
 	padding-left: 6em;
-	background-color: #eee;
-	border-bottom: 1px solid #ddd;
 }
 	.header > h1 {
 		margin-top: -0.25em;
 	}
 	.header > img {
-		width: 4em;
+		width: 3em;
 	    position: absolute;
 	    left: 1em;
 	    top: 0.1em;

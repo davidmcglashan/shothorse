@@ -85,9 +85,9 @@ const viewport = {
 
 					// set the bounds of the shape to the current mouse position
 					viewport.drawingObj.x = event.clientX - bound.x
-					viewport.drawingObj.y = event.clientY - 44 - bound.y
+					viewport.drawingObj.y = event.clientY - bound.y
 					viewport.drawingObj.x2 = event.clientX - bound.x
-					viewport.drawingObj.y2 = event.clientY - 44 - bound.y
+					viewport.drawingObj.y2 = event.clientY - bound.y
 					viewport.drawingObj.offsetx = 0
 					viewport.drawingObj.offsety = 0
 					break
@@ -140,7 +140,7 @@ const viewport = {
 				viewport.drawingObj.y2 = event.clientY - bound.y - viewport.drawingObj.offsety
 			} else {
 				viewport.drawingObj.x2 = event.clientX - bound.x
-				viewport.drawingObj.y2 = event.clientY - 44 - bound.y
+				viewport.drawingObj.y2 = event.clientY - bound.y
 			}
 			viewport.paint()
 		}
@@ -155,8 +155,8 @@ const viewport = {
 			viewport.nextDrawFunc = viewport.types.arrow
 		}
 
-		// 66 is 'B' for box.
-		else if ( event.keyCode === 66 ) {
+		// 66 is 'B' for box (or 'R' for rectangle: 82)
+		else if ( event.keyCode === 66 || event.keyCode === 82 ) {
 			viewport.nextDrawFunc = viewport.types.box
 		}
 
@@ -185,9 +185,30 @@ const viewport = {
 		for ( let obj of viewport.objects ) {
 			if ( obj.id === id ) {
 				viewport.selection = obj
+				if ( obj.type === viewport.types.image ) {
+					viewport.toggleScale()
+				}
 				break
 			}
 		}
+	},
+
+	/**
+	 * Toggles the scale of the viewport between 100% and 50%. Useful for when retina-resolution
+	 * images get pasted in and they're huuge.
+	 */
+	toggleScale: () => {
+		viewport.elem.classList.toggle( 'scaled' )
+
+		// Now scale all the cartesian co-ords in the objects to match the new scale.
+		let factor = viewport.elem.classList.contains( 'scaled' ) ? 0.5 : 2
+		for ( let obj of viewport.objects ) {
+			obj.x *= factor
+			obj.x2 *= factor
+			obj.y *= factor
+			obj.y2 *= factor
+		}
+		viewport.paint()
 	},
 
 	/**
@@ -211,7 +232,7 @@ const viewport = {
 	 		 		elem.innerHTML = 'Arrow'
 					break
 			}
-			elem.setAttribute( 'href', 'javascript:void' )
+			elem.setAttribute( 'href', 'javascript:void(0);' )
 			elem.setAttribute( 'onclick', `viewport.select('${obj.id}')` )
 			div.appendChild( elem )
 		}
