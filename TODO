@@ -8,7 +8,7 @@ VERSIONING
 **** BUGS *********************************************************
 
 **** FEATURES *************************
-- select shapes in list to ghost/x-ray them
+- objects list ...
   - selection UI
   - change colour
   - change stroke width

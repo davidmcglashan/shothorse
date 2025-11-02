@@ -306,8 +306,21 @@ const viewport = {
 			}
 			elem.setAttribute( 'href', 'javascript:void(0);' )
 			elem.setAttribute( 'onclick', `viewport.select('${obj.id}')` )
+			elem.addEventListener( "mouseenter", (event) => { viewport.highlight( obj.id ) } )
+			elem.addEventListener( "mouseleave", (event) => { viewport.highlight() } )
 			div.appendChild( elem )
 		}
+	},
+
+	/**
+	 * Called from the UI to highlight a shape's corners
+	 */
+	highlight: ( id = 'exit' ) => {
+		console.log( id )
+		for ( let obj of viewport.objects ) {
+			obj.highlighted = obj.id === id
+		}
+		viewport.paint()
 	},
 
 	/**
@@ -366,9 +379,9 @@ const viewport = {
 	 */
 	paintBox: ( cc, obj ) => {
 		// If this is the selected object we want to add affordances for interacting with it.
-		if ( viewport.selection && obj.id === viewport.selection.id ) {
+		if ( obj.highlighted || ( viewport.selection && obj.id === viewport.selection.id ) ) {
 			// Moving is indicated with small circles in each corner.
-			if ( !viewport.drawFunc && viewport.nextDrawFunc === viewport.types.move_start ) {
+			if ( obj.highlighted || ( !viewport.drawFunc && viewport.nextDrawFunc === viewport.types.move_start ) ) {
 				cc.strokeStyle = '#000'
 				cc.fillStyle = 'rgba(0,0,0,0.5)'
 				cc.lineWidth = 1
@@ -417,9 +430,9 @@ const viewport = {
 	 */
 	paintArrow: ( cc, obj ) => {
 		// If this is the selected object we want to add affordances for interacting with it.
-		if ( viewport.selection && obj.id === viewport.selection.id ) {
+		if ( obj.highlighted || ( viewport.selection && obj.id === viewport.selection.id ) ) {
 			// Moving is indicated with small circles at each end of the line.
-			if ( !viewport.drawFunc && viewport.nextDrawFunc === viewport.types.move_start ) {
+			if ( obj.highlighted || ( !viewport.drawFunc && viewport.nextDrawFunc === viewport.types.move_start ) ) {
 				cc.strokeStyle = '#000'
 				cc.fillStyle = 'rgba(0,0,0,0.5)'
 				cc.lineWidth = 1

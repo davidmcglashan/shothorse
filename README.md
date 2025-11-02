@@ -8,6 +8,10 @@ Quickly annotate screenshots with boxes, arrows and text. No options. No fuss. P
 
 ## Changelog
 
+### version 0.1.3
+
+* You can mouse over shapes in list to highlight their corners.
+
 ### version 0.1.2
 
 * Backspace will delete the selected shape.
