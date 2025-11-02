@@ -25,16 +25,19 @@ body {
 	right: 0;
 	padding: 0.25rem;
 	padding-left: 5.5rem;
-	max-height: 1px;
+	max-height: 32px;
+	display: flex;
+	align-items: center;
+	gap: 1rem;
 }
-	.header > h1 {
-		margin-top: -0em;
+	.header > h1 a {
+		color: #000;
 	}
 	.header > img {
 		width: 3em;
 	    position: absolute;
 	    left: 2.5em;
-	    top: 0.5sem;
+	    top: 0.5rem;
 	}
 	/* The header features a simple right-aligned toobar. This spaces out its buttons. */
 	.header > div.toolbar {
@@ -82,22 +85,6 @@ a {
 		text-decoration: underline;
 		color: #25a;
 	}
-
-	/* Nice blue buttons. */
-	a.button {
-		background-color: #36c;
-		border: 1px solid #36c;
-		color: #fff;
-		padding: 0.1em 0.5em;
-		border-radius: 3px;
-		text-decoration: none;
-	}
-		/* Affordance effects for buttons: dark background, white foreground. */
-		a.button:hover {
-			border: 1px solid #236 !important;
-			background-color: #236 !important;
-			color: #fff !important;
-		}
 
 /* Any element can be hidden with this class. */
 .hidden {

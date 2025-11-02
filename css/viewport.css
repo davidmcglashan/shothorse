@@ -59,3 +59,8 @@
 	#list a {
 		color: #fff;
 	}
+	#list a.selected {
+		font-weight: 900;
+		text-decoration: underline;
+		color: #ff8;
+	}

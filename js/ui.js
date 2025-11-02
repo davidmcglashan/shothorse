@@ -1,5 +1,5 @@
 const ui = {
-	version: 'v0.1.3',
+	version: 'v0.1.4',
 
 	/**
 	 * Initialise the UI. To be called once at point of page load.
@@ -75,6 +75,7 @@ const ui = {
 
 	setColour: () => {
 		localStorage[ 'shothorse.colour' ] = document.getElementById( 'colour' ).value
+		viewport.setColour()
 	},
 
 	/**

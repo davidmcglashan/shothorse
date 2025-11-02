@@ -257,12 +257,26 @@ const viewport = {
 		for ( let obj of viewport.objects ) {
 			if ( obj.id === id ) {
 				viewport.selection = obj
+
+				// Update the colour picker to the selection's RGB, if it has one.
+				if ( obj.rgb ) {
+					for ( colour of viewport.colours ) {
+						if ( colour.rgb === obj.rgb ) {
+							document.getElementById( 'colour' ).value = colour.name
+						}
+					}
+				}
+
+				// Images get to toggle the scale on selection.
 				if ( obj.type === viewport.types.image ) {
 					viewport.toggleScale()
 				}
 				break
 			}
 		}
+
+
+		viewport.updateObjectList()
 	},
 
 	/**
@@ -308,6 +322,11 @@ const viewport = {
 			elem.setAttribute( 'onclick', `viewport.select('${obj.id}')` )
 			elem.addEventListener( "mouseenter", (event) => { viewport.highlight( obj.id ) } )
 			elem.addEventListener( "mouseleave", (event) => { viewport.highlight() } )
+
+			if ( viewport.selection && obj.id === viewport.selection.id ) {
+				elem.setAttribute( 'class', 'selected' )
+			}
+
 			div.appendChild( elem )
 		}
 	},
@@ -321,6 +340,23 @@ const viewport = {
 			obj.highlighted = obj.id === id
 		}
 		viewport.paint()
+	},
+
+	/**
+	 * Called from the UI when the colour picker is changed
+	 */
+	setColour: () => {
+		// The selected item should hereby have its colour changed.
+		if ( viewport.selection ) {
+			let storageCol = localStorage[ 'shothorse.colour' ]
+			for ( colour of viewport.colours ) {
+				if ( colour.name === storageCol ) {
+					viewport.selection.rgb = colour.rgb
+					viewport.paint()
+					return
+				}
+			}
+		}
 	},
 
 	/**
