@@ -182,6 +182,25 @@ const viewport = {
 			viewport.glass.setAttribute( 'class', 'edit' )
 			viewport.paint()
 		}
+
+		// Do some arrow key magic ...
+		else if ( viewport.selection && event.keyCode === 38 ) {
+			viewport.selection.y -= event.altKey ? 0 : (event.shiftKey ? 10 : 1)
+			viewport.selection.y2 -= event.shiftKey ? 10 : 1
+			viewport.paint()
+		} else if ( viewport.selection && event.keyCode === 40 ) {
+			viewport.selection.y += event.altKey ? 0 : (event.shiftKey ? 10 : 1)
+			viewport.selection.y2 += event.shiftKey ? 10 : 1
+			viewport.paint()
+		} else if ( viewport.selection && event.keyCode === 37 ) {
+			viewport.selection.x -= event.altKey ? 0 : (event.shiftKey ? 10 : 1)
+			viewport.selection.x2 -= event.shiftKey ? 10 : 1
+			viewport.paint()
+		} else if ( viewport.selection && event.keyCode === 39 ) {
+			viewport.selection.x += event.altKey ? 0 : (event.shiftKey ? 10 : 1)
+			viewport.selection.x2 += event.shiftKey ? 10 : 1
+			viewport.paint()
+		}
 	},
 
 	/**

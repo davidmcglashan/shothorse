@@ -8,17 +8,16 @@ VERSIONING
 **** BUGS *********************************************************
 
 **** FEATURES *************************
-- delete a shape
 - select shapes in list to ghost/x-ray them
-- move with arrow keys
+  - delete a shape
+  - change colour
+  - change stroke width
 - regular ol' lines
 - stroke width picker
 - textured pen strokes might be nice
 - write text
 - undo 
-- sort out CSS vars and redo dark mode
 - fancy CTA
 - detect if a 'too large' image is being pasted in and apply scale right away
 - freehand drawing tool
 - quickly change background colour from colours in the image
-- icons and web manifest

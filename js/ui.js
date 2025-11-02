@@ -1,5 +1,5 @@
 const ui = {
-	version: 'v0.1.0',
+	version: 'v0.1.1',
 
 	/**
 	 * Initialise the UI. To be called once at point of page load.

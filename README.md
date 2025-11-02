@@ -8,6 +8,10 @@ Quickly annotate screenshots with boxes, arrows and text. No options. No fuss. P
 
 ## Changelog
 
+### version 0.1.1
+
+* Arrow keys will now move the selected shape.
+
 ### version 0.1.0
 
 * Functional enough to draw boxes and arrows on top in six colours.
