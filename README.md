@@ -8,6 +8,10 @@ Quickly annotate screenshots with boxes, arrows and text. No options. No fuss. P
 
 ## Changelog
 
+### version 0.1.6
+
+* Colour and line style now customisable and persistable.
+
 ### version 0.1.5
 
 * Made the arrowhead a bit smaller

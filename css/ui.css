@@ -39,13 +39,41 @@ body {
 	    left: 2.5em;
 	    top: 0.5rem;
 	}
-	/* The header features a simple right-aligned toobar. This spaces out its buttons. */
-	.header > div.toolbar {
-		right: 1em;
-	    top: 1.1em;
+	/* This div is styled to represent the current drawing style. */
+	.header > div#colour > div#line {
+		border-bottom-width: 4px;
+		border-bottom-style: solid;
+		min-width: 100px;
 	}
-	.header div.toolbar a {
-		margin-left: 2em;
+	.header > div#colour.red > div#line {
+		color: #ff0000;
+	}
+	.header > div#colour.green > div#line {
+		color: #008000;
+	}
+	.header > div#colour.orange > div#line {
+		color: #ffa500;
+	}
+	.header > div#colour.blue > div#line {
+		color: #0000ff;
+	}
+	.header > div#colour.black > div#line {
+		color: #000000;
+	}
+	.header > div#colour.white > div#line {
+		color: #ffffff;
+	}
+	.header > div#colour.grey > div#line {
+		color: #808080;
+	}
+	.header > div#colour > div#line {
+		border-bottom-style: solid;
+	}
+	.header > div#colour > div#line.dotted {
+		border-bottom-style: dotted;
+	}
+	.header > div#colour > div#line.dashed {
+		border-bottom-style: dashed;
 	}
 
 /* Lightbox is a green non-interactive element that appears under the slide-in tray. It fades in and out. */

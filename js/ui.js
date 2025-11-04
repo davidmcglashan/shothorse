@@ -1,5 +1,5 @@
 const ui = {
-	version: 'v0.1.5',
+	version: 'v0.1.6',
 
 	/**
 	 * Initialise the UI. To be called once at point of page load.
@@ -34,8 +34,16 @@ const ui = {
 	 * Restores the UI to its previous state invoking localstorage. Called once on page load.
 	 */
 	restoreState: () => {
+		// Restore the colour picker.
 		if ( localStorage[ 'shothorse.colour' ] ) {
-			document.getElementById( 'colour' ).value = localStorage[ 'shothorse.colour' ]
+			let elem = document.getElementById( 'colour' )
+			elem.setAttribute( 'class', localStorage[ 'shothorse.colour' ].toLowerCase() )
+		}
+
+		// Restore the line style
+		if ( localStorage[ 'shothorse.line' ] ) {
+			let elem = document.getElementById( 'line' )
+			elem.setAttribute( 'class', localStorage[ 'shothorse.line' ].toLowerCase() )
 		}
 
 		// Add an escape listener for the slide-in tray.
@@ -71,11 +79,6 @@ const ui = {
 		document.addEventListener( 'keyup', viewport.keyUp )
 		addEventListener( 'resize', (event) => { viewport.snap() } )
 
-	},
-
-	setColour: () => {
-		localStorage[ 'shothorse.colour' ] = document.getElementById( 'colour' ).value
-		viewport.setColour()
 	},
 
 	/**

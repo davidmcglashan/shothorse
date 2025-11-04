@@ -14,12 +14,13 @@ const viewport = {
 	},
 
 	colours: [
-		{ name: 'Red', rgb: '#cc0000' },
-		{ name: 'Orange', rgb: '#ff8800' },
-		{ name: 'Green', rgb: '#008800' },
-		{ name: 'Blue', rgb: '#0000aa' },
-		{ name: 'Black', rgb: '#000000' },
-		{ name: 'White', rgb: '#ffffff' },
+		{ name: 'red', rgb: '#ff0000' },
+		{ name: 'orange', rgb: '#ffa500' },
+		{ name: 'green', rgb: '#008000' },
+		{ name: 'blue', rgb: '#0000ff' },
+		{ name: 'black', rgb: '#000000' },
+		{ name: 'white', rgb: '#ffffff' },
+		{ name: 'grey', rgb: '#808080' },
 	],
 	
 	/**
@@ -72,14 +73,15 @@ const viewport = {
 		obj.type = type
 		obj.id = crypto.randomUUID()
 		
-		// Work out what colour the shape should be.
-		let uicol = document.getElementById( 'colour' ).value
+		// Work out what colour and style the shape should be.
+		let uicol = document.getElementById( 'colour' ).getAttribute( 'class' )
 		for ( let colour of viewport.colours ) {
 			if ( colour.name === uicol ) {
 				obj.rgb = colour.rgb
 				break
 			}
 		}
+		obj.style = document.getElementById( 'line' ).getAttribute( 'class' )
 
 		return obj
 	},
@@ -176,8 +178,18 @@ const viewport = {
 	 * Sets the drawing mode while a key is held, e.g. holding B will draw a box with a mouse drag.
 	 */
 	keyDown: ( event ) => {
+		// 67 is 'C' for colour - we cycle through the colours.
+		if ( event.keyCode === 67 ) {
+			viewport.setColour()
+		}
+
+		// 190 is '.' for toggling dotted lines.
+		else if ( event.keyCode === 190 ) {
+			viewport.setLineStyle()
+		}
+
 		// 65 is 'A' for arrow.
-		if ( event.keyCode === 65 ) {
+		else if ( event.keyCode === 65 ) {
 			viewport.nextDrawFunc = viewport.types.arrow
 			viewport.glass.setAttribute( 'class', 'draw' )
 		}
@@ -335,7 +347,6 @@ const viewport = {
 	 * Called from the UI to highlight a shape's corners
 	 */
 	highlight: ( id = 'exit' ) => {
-		console.log( id )
 		for ( let obj of viewport.objects ) {
 			obj.highlighted = obj.id === id
 		}
@@ -343,18 +354,73 @@ const viewport = {
 	},
 
 	/**
-	 * Called from the UI when the colour picker is changed
+	 * Called from the UI when the colour is cycled
 	 */
 	setColour: () => {
-		// The selected item should hereby have its colour changed.
-		if ( viewport.selection ) {
-			let storageCol = localStorage[ 'shothorse.colour' ]
-			for ( colour of viewport.colours ) {
-				if ( colour.name === storageCol ) {
-					viewport.selection.rgb = colour.rgb
-					viewport.paint()
-					return
+		// Get the current colour from the UI.
+		let elem = document.getElementById( 'colour' )
+		let current = elem.getAttribute( 'class' )
+
+		// Find the next one, wrapping around if we have to.
+		let index = 0
+		for ( let colour of viewport.colours ) {
+			if ( colour.name === current ) {
+				let next = index+1
+				if ( next === 7 ) { 
+					next = 0
 				}
+
+				// Update UI and localstorage to the new colour.
+				let nextCol = viewport.colours[next]
+				localStorage[ 'shothorse.colour' ] = nextCol.name
+				elem.setAttribute( 'class', nextCol.name )
+
+				// The selected item should hereby have its colour changed.
+				if ( viewport.selection ) {
+					viewport.selection.rgb = nextCol.rgb
+					viewport.paint()
+				}
+
+				// No need to keep looping
+				return
+			} else {
+				index += 1
+			}
+		}
+	},
+
+	/**
+	 * Called from the UI when the line style is cycled
+	 */
+	setLineStyle: () => {
+		// Get the current colour from the UI.
+		let elem = document.getElementById( 'line' )
+		let current = elem.getAttribute( 'class' )
+		let options = [ 'solid', 'dashed', 'dotted' ]
+
+		// Find the next one, wrapping around if we have to.
+		let index = 0
+		for ( let style of options ) {
+			if ( style === current ) {
+				let next = index+1
+				if ( next === 3 ) { 
+					next = 0
+				}
+
+				// Update UI and localstorage to the new colour.
+				localStorage[ 'shothorse.line' ] = options[next]
+				elem.setAttribute( 'class', options[next] )
+
+				// The selected item should hereby have its style changed.
+				if ( viewport.selection ) {
+					viewport.selection.style = options[next]
+					viewport.paint()
+				}
+
+				// No need to keep looping
+				return
+			} else {
+				index += 1
 			}
 		}
 	},
@@ -458,6 +524,17 @@ const viewport = {
 		cc.rect( obj.x, obj.y, obj.x2-obj.x, obj.y2-obj.y )
 		cc.strokeStyle = obj.rgb
 		cc.lineWidth = 2
+		switch ( obj.style ) {
+			case 'solid':
+				cc.setLineDash([])
+				break
+			case 'dotted':
+				cc.setLineDash([2, 3]);
+				break
+			case 'dashed':
+				cc.setLineDash([8, 8]);
+				break
+		}
 		cc.stroke()
 	},
 
@@ -502,6 +579,17 @@ const viewport = {
 		cc.lineTo( obj.x2, obj.y2 )
 		cc.strokeStyle = obj.rgb
 		cc.lineWidth = 2
+		switch ( obj.style ) {
+			case 'solid':
+				cc.setLineDash([])
+				break
+			case 'dotted':
+				cc.setLineDash([2, 3]);
+				break
+			case 'dashed':
+				cc.setLineDash([8, 8]);
+				break
+		}
 		cc.stroke()
 
 		// A little bit of trig to calculate where ...
@@ -523,6 +611,7 @@ const viewport = {
         cc.lineTo(0,0);
         cc.lineTo(-7,-10);
         cc.restore();
+		cc.setLineDash([])
         cc.stroke();
 	}
 }
