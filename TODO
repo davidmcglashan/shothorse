@@ -8,6 +8,7 @@ VERSIONING
 **** BUGS *********************************************************
 
 **** FEATURES *************************
+- dotted & dashed lines
 - objects list ...
   - selection UI
   - change stroke width

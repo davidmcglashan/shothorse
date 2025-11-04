@@ -496,7 +496,7 @@ const viewport = {
 			}
 		}
 
-		// And now the arrow
+		// This is the line ...
 		cc.beginPath()
 		cc.moveTo( obj.x, obj.y )
 		cc.lineTo( obj.x2, obj.y2 )
@@ -504,16 +504,24 @@ const viewport = {
 		cc.lineWidth = 2
 		cc.stroke()
 
-		let radians=Math.atan( (obj.y2-obj.y) / (obj.x2-obj.x) );
-        radians += ( (obj.x2 > obj.x) ?-90 : 90 ) * Math.PI/180;
+		// A little bit of trig to calculate where ...
+		let radians = 0
+		// Prevent the div-by-0 below by feeding the value for vertically up lines.
+		if ( obj.x2 - obj.x === 0 ) {
+			radians = Math.PI
+		} else {
+			radians = Math.atan( (obj.y2-obj.y) / (obj.x2-obj.x) );
+        	radians += ( (obj.x2 > obj.x) ? -90 : 90 ) * Math.PI/180;
+		}
 
+		// ... to draw the arrowhead
 		cc.save()
         cc.beginPath();
         cc.translate( obj.x2,obj.y2 );
         cc.rotate( radians );
-        cc.moveTo(10,-15);
+        cc.moveTo(7,-10);
         cc.lineTo(0,0);
-        cc.lineTo(-10,-15);
+        cc.lineTo(-7,-10);
         cc.restore();
         cc.stroke();
 	}

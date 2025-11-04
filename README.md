@@ -8,6 +8,11 @@ Quickly annotate screenshots with boxes, arrows and text. No options. No fuss. P
 
 ## Changelog
 
+### version 0.1.5
+
+* Made the arrowhead a bit smaller
+* Vertical arrows no longer have an inverted arrowhead
+
 ### version 0.1.4
 
 * Colour selection tracked by the UI.
