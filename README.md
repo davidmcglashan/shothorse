@@ -8,6 +8,15 @@ Quickly annotate screenshots with boxes, arrows and text. No options. No fuss. P
 
 ## Changelog
 
+### version 0.1.8
+
+* 'L' can now be used to draw simple lines.
+
+### version 0.1.7
+
+* New shapes are no longer autoselected.
+* 's' can be used to quickly select the last shape which was placed.
+
 ### version 0.1.6
 
 * Colour and line style now customisable and persistable.

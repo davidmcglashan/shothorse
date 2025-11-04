@@ -9,8 +9,9 @@ const viewport = {
 		image: 0,
 		box: 1,
 		arrow: 2,
-		move_start: 3,
-		move_end: 4
+		line: 3,
+		move_start: 4,
+		move_end: 5
 	},
 
 	colours: [
@@ -37,12 +38,13 @@ const viewport = {
 			viewport.imgElem.remove()
 		}
 		viewport.imgElem = elem
-		
 		// trash all the previous painting shapes too!
+		viewport.selection = null
+		viewport.newest = null
 		viewport.objects = [ viewport.newObject( viewport.types.image ) ]
+		
+		// Refresh the UI
 		viewport.updateObjectList()
-
-		// Setup the canvas.
 		viewport.snap()
 	},
 
@@ -102,10 +104,12 @@ const viewport = {
 		switch ( viewport.drawFunc ) {
 			// New objects result in a new entry in the datamodel
 			case viewport.types.arrow:
+			case viewport.types.line:
 			case viewport.types.box:
 				viewport.drawingObj = viewport.newObject( viewport.drawFunc )
 				viewport.objects.push( viewport.drawingObj )
-				viewport.selection = viewport.drawingObj
+				viewport.newest = viewport.drawingObj
+				viewport.selection = null
 
 				// set the bounds of the shape to the current mouse position
 				viewport.drawingObj.x = event.clientX - bound.x
@@ -194,6 +198,12 @@ const viewport = {
 			viewport.glass.setAttribute( 'class', 'draw' )
 		}
 
+		// 76 is 'L' for line (an arrow with no head to you, sunshine).
+		else if ( event.keyCode === 76 ) {
+			viewport.nextDrawFunc = viewport.types.line
+			viewport.glass.setAttribute( 'class', 'draw' )
+		}
+
 		// 66 is 'B' for box (or 'R' for rectangle: 82)
 		else if ( event.keyCode === 66 || event.keyCode === 82 ) {
 			viewport.nextDrawFunc = viewport.types.box
@@ -212,6 +222,14 @@ const viewport = {
 			viewport.nextDrawFunc = viewport.types.move_end
 			viewport.glass.setAttribute( 'class', 'edit' )
 			viewport.paint()
+		}
+
+		// 83 is 'S' for toggling dotted lines.
+		else if ( event.keyCode === 83 && viewport.newest ) {
+			viewport.selection = viewport.newest
+			viewport.highlight( viewport.selection.id )
+			viewport.paint()
+			viewport.updateObjectList()
 		}
 
 		// Backspace to delete the selected object.
@@ -259,7 +277,7 @@ const viewport = {
 	keyUp: ( event ) => {
 		viewport.nextDrawFunc = null
 		viewport.glass.removeAttribute( 'class' )
-		viewport.paint()
+		viewport.highlight()
 	},
 
 	/**
@@ -325,6 +343,9 @@ const viewport = {
 					break
 				case viewport.types.box:
 	 		 		elem.innerHTML = 'Box'
+					break
+				case viewport.types.line:
+	 		 		elem.innerHTML = 'Line'
 					break
 				case viewport.types.arrow:
 	 		 		elem.innerHTML = 'Arrow'
@@ -469,8 +490,9 @@ const viewport = {
 					viewport.paintBox( cc, obj )
 					break
 
+				case viewport.types.line:
 				case viewport.types.arrow:
-					viewport.paintArrow( cc, obj )
+					viewport.paintArrow( cc, obj, obj.type === viewport.types.arrow )
 					break
 			}
 		}
@@ -541,7 +563,7 @@ const viewport = {
 	/**
 	 * Paints the arrow described by obj into the canvas context cc.
 	 */
-	paintArrow: ( cc, obj ) => {
+	paintArrow: ( cc, obj, isArrow = true ) => {
 		// If this is the selected object we want to add affordances for interacting with it.
 		if ( obj.highlighted || ( viewport.selection && obj.id === viewport.selection.id ) ) {
 			// Moving is indicated with small circles at each end of the line.
@@ -592,26 +614,28 @@ const viewport = {
 		}
 		cc.stroke()
 
-		// A little bit of trig to calculate where ...
-		let radians = 0
-		// Prevent the div-by-0 below by feeding the value for vertically up lines.
-		if ( obj.x2 - obj.x === 0 ) {
-			radians = Math.PI
-		} else {
-			radians = Math.atan( (obj.y2-obj.y) / (obj.x2-obj.x) );
-        	radians += ( (obj.x2 > obj.x) ? -90 : 90 ) * Math.PI/180;
+		if ( isArrow ) {
+			// A little bit of trig to calculate where ...
+			let radians = 0
+			// Prevent the div-by-0 below by feeding the value for vertically up lines.
+			if ( obj.x2 - obj.x === 0 ) {
+				radians = Math.PI
+			} else {
+				radians = Math.atan( (obj.y2-obj.y) / (obj.x2-obj.x) );
+				radians += ( (obj.x2 > obj.x) ? -90 : 90 ) * Math.PI/180;
+			}
+			
+			// ... to draw the arrowhead
+			cc.save()
+			cc.beginPath();
+			cc.translate( obj.x2,obj.y2 );
+			cc.rotate( radians );
+			cc.moveTo(7,-10);
+			cc.lineTo(0,0);
+			cc.lineTo(-7,-10);
+			cc.restore();
+			cc.setLineDash([])
+			cc.stroke();			
 		}
-
-		// ... to draw the arrowhead
-		cc.save()
-        cc.beginPath();
-        cc.translate( obj.x2,obj.y2 );
-        cc.rotate( radians );
-        cc.moveTo(7,-10);
-        cc.lineTo(0,0);
-        cc.lineTo(-7,-10);
-        cc.restore();
-		cc.setLineDash([])
-        cc.stroke();
 	}
 }

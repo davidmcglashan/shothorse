@@ -8,16 +8,16 @@ VERSIONING
 **** BUGS *********************************************************
 
 **** FEATURES *************************
-- dotted & dashed lines
-- objects list ...
-  - selection UI
-  - change stroke width
-- regular ol' lines
-- stroke width picker
+- export to clipboard
+1.0
+- 'h' for horizontal line
+- 'v' for vertical line
+- quickly change background colour from colours in the image
 - textured pen strokes might be nice
 - write text
 - undo 
 - fancy CTA
 - detect if a 'too large' image is being pasted in and apply scale right away
 - freehand drawing tool
-- quickly change background colour from colours in the image
+- stroke width picker
+- Shift+'s' to cycle selection
