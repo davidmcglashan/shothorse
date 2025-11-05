@@ -8,6 +8,10 @@ Quickly annotate screenshots with boxes, arrows and text. No options. No fuss. P
 
 ## Changelog
 
+### version 1.0
+
+* Line indicator style and colour persist and restore properly.
+
 ### version 0.1.9
 
 * 'X' will now export to the clipboard (at least locally - untested over HTTPS)

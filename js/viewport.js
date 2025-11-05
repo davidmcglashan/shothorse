@@ -297,7 +297,23 @@ const viewport = {
 				if ( obj.rgb ) {
 					for ( colour of viewport.colours ) {
 						if ( colour.rgb === obj.rgb ) {
-							document.getElementById( 'colour' ).value = colour.name
+							let elem = document.getElementById( 'colour' )
+							elem.setAttribute( 'class', colour.name )
+							localStorage[ 'shothorse.colour' ] = colour.name
+							break
+						}
+					}
+				}
+
+				// Update the colour picker to the selection's line style, if it has one.
+				if ( obj.style ) {
+					let options = [ 'solid', 'dashed', 'dotted' ]
+					for ( option of options ) {
+						if ( option === obj.style ) {
+							let elem = document.getElementById( 'line' )
+							elem.setAttribute( 'class', option )
+							localStorage[ 'shothorse.line' ] = option
+							break
 						}
 					}
 				}
