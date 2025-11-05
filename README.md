@@ -8,6 +8,10 @@ Quickly annotate screenshots with boxes, arrows and text. No options. No fuss. P
 
 ## Changelog
 
+### version 0.1.9
+
+* 'X' will now export to the clipboard (at least locally - untested over HTTPS)
+
 ### version 0.1.8
 
 * 'L' can now be used to draw simple lines.

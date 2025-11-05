@@ -269,6 +269,11 @@ const viewport = {
 			viewport.selection.x2 += event.shiftKey ? 10 : 1
 			viewport.paint()
 		}
+
+		// 'X' will export the canvas to the clipboard!
+		if ( event.keyCode === 88 ) {
+			viewport.export()
+		}
 	},
 
 	/**
@@ -637,5 +642,87 @@ const viewport = {
 			cc.setLineDash([])
 			cc.stroke();			
 		}
+	},
+
+	/**
+	 * Exports the canvas into the clipboard as a PNG image. This is performed with the
+	 * following shenanigans ...
+	 *  1. an offscreen canvas the size of the pasted image
+	 *  2. draw the pasted image into there
+	 *  3. draw the onscreen canvas onto the offscreen one, respecting its boundaries
+	 *  4. write to the clipboard via the two const functions below because Safari ...
+	 */
+	export: () => {
+		let factor = viewport.elem.classList.contains( 'scaled' ) ? 0.5 : 1
+
+		// Here's an offscreen canvas the size of the image.
+		let offscreen = document.createElement( 'canvas' )
+		offscreen.width = viewport.imgElem.width * factor
+		offscreen.height = viewport.imgElem.height * factor
+
+		// Draw the image into there
+		let offc = offscreen.getContext( "2d" )
+		offc.drawImage( viewport.imgElem, 0, 0, offscreen.width, offscreen.height )
+
+		// Draw the onscreen canvas into there
+		let bound = viewport.imgElem.getBoundingClientRect()
+		offc.drawImage( viewport.canvas, -bound.x, -bound.y )
+
+		// Let the two async funcs() do their jazz ...
+		copyImageToClipBoardSafari( offscreen )
+	},
+
+	/**
+	 * Provides feedback of a successful copy to the clipboard.
+	 */
+	success: () => {
+		let title = document.getElementById( 'title' )
+		title.innerHTML = 'Copied ... !'
+		setTimeout( function() { title.innerHTML = 'shothorse' }, 1500 );
 	}
+};
+
+/**
+ * Copies the passed in canvas into the clipboard and getting its image data blob and wrapping
+ * it in PNG encoding. Due to access constraints for the clipboard we have to do this from a
+ * user event and in a robust fashion, hence this const function outsite the viewport{} object.
+ */
+const copyImageToClipBoardSafari = ( canvas ) => {
+    navigator.clipboard.write(
+		[
+        	new ClipboardItem( {
+        		"image/png": new Promise( async (resolve, reject) => {
+            		try {
+              			const blob = await createBlob( canvas );
+              			resolve( 
+							new Blob(
+								[blob], 
+								{ type: "image/png" } 
+							) 
+						);
+            		} catch( err ) {
+              			reject( err );
+            		}
+          		} ),
+        	} ),
+      	]
+	).then( () =>
+    	viewport.success()
+    ).catch( (err) => console.error( "Error:", err ) );
 }
+
+/**
+ * Creates a blob from the canvas that we can encode as a PNG and put in the clipboard.
+ * This has to be done asynchronously and so the creation is wrapped in a Promise.
+ */
+const createBlob = ( canvas ) => {
+	return new Promise( (resolve, reject ) => {
+		canvas.toBlob(( blob ) => {
+			if ( blob ) {
+				resolve( blob );
+      		} else {
+        		reject( new Error( "Unable to create a blob from this canvas" ) );
+      		}
+    	} );
+  	} );
+};

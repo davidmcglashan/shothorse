@@ -6,9 +6,9 @@ VERSIONING
  - Point releases for bug fixes, UI modifications, meta and build changes.
 
 **** BUGS *********************************************************
+- selection should update the line style and colour
 
 **** FEATURES *************************
-- export to clipboard
 1.0
 - 'h' for horizontal line
 - 'v' for vertical line

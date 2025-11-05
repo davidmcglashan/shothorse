@@ -1,5 +1,5 @@
 const ui = {
-	version: 'v0.1.8',
+	version: 'v0.1.9',
 
 	/**
 	 * Initialise the UI. To be called once at point of page load.
@@ -15,16 +15,6 @@ const ui = {
 		let years = document.getElementsByClassName( 'year' )
 		for ( let year of years ) {
 			year.innerHTML = new Date().getFullYear()
-		}
-
-		// Populate the colours dropdown
-		let select = document.getElementById( 'colour' )
-		for ( let colour of viewport.colours ) {
-			let option = document.createElement( 'option')
-			select.appendChild( option )
-
-			option.setAttribute( 'value', colour.name )
-			option.innerHTML = colour.name
 		}
 
 		ui.restoreState()
