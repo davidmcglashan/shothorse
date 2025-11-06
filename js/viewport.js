@@ -224,7 +224,7 @@ const viewport = {
 			viewport.paint()
 		}
 
-		// 83 is 'S' for toggling dotted lines.
+		// 83 is 'S' for quickly selecting the last-placed object.
 		else if ( event.keyCode === 83 && viewport.newest ) {
 			viewport.selection = viewport.newest
 			viewport.highlight( viewport.selection.id )
@@ -694,7 +694,8 @@ const viewport = {
 	success: () => {
 		let title = document.getElementById( 'title' )
 		title.innerHTML = 'Copied ... !'
-		setTimeout( function() { title.innerHTML = 'shothorse' }, 1500 );
+		title.classList.toggle('white')
+		setTimeout( function() { title.innerHTML = 'shothorse'; title.classList.toggle('white') }, 1500 );
 	}
 };
 
