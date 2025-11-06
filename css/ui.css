@@ -33,6 +33,9 @@ body {
 	.header > h1 a {
 		color: #000;
 	}
+	.header > h1 a.white {
+		color: #fff;
+	}
 	.header > img {
 		width: 3em;
 	    position: absolute;
@@ -153,13 +156,14 @@ div#tray {
 	top: 0;
 	bottom: 0;
 	left: 100%;
-	width: 40%;
+	width: auto;
 	height: 100%;
 	background-color: #fff;
 	border-left: #777 1px solid;
 	z-index: 2;
 	padding: 1rem;
 	min-height: 100%;
+	overflow-y: scroll;
 }
 	/* These two classes are applied to the tray to trigger its animations in and out. */
 	div#tray.open {
@@ -171,7 +175,7 @@ div#tray {
 	}
 
 	/* Other tray styles ... */
-	div#tray img {
+	div#tray > img {
 		width: 8rem;
 		height: 8rem;
 	}
@@ -183,3 +187,33 @@ div#tray {
 		line-height: 1.4em;
 		margin: 0 0 0.1rem 0;
 	}
+	div#tray #instructions p {
+		margin-top: 1rem;
+	}
+
+	/* Adverts for other horse-related services and app. */
+	div#tray ul.horses {
+		display: flex;
+		gap: 1rem;
+		list-style-type: none;
+		margin: 1rem 0rem 2rem;
+		padding-inline-start: 0;
+	}
+		div#tray ul.horses li a {
+			border-radius: 8px;
+			border: 1px solid #ccc;
+			padding: 0.5rem;
+			display: flex;
+			align-items: center;
+			flex-direction: column;
+			box-shadow: 4px 4px 8px rgba(0,0,0,0.1);
+		}
+		div#tray ul.horses li a:hover {
+			box-shadow: 4px 4px 8px rgba(0,0,0,0.2);
+			border: 1px solid #aaa;
+		}
+		div#tray ul.horses li img {
+			max-width: 4rem;
+			aspect-ratio: 1;
+			display: block;
+		}
